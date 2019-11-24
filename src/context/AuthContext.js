@@ -5,7 +5,7 @@ import { navigate } from "../navigationRef";
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case "sign_up":
+    case "sign_in":
       return { token: action.payload, errorMessage: "" };
     case "add_error":
       return { ...state, errorMessage: action.payload };
@@ -18,7 +18,7 @@ const signUp = dispatch => async ({ email, password }) => {
   try {
     const response = await trackerApi.post("/signup", { email, password });
     await AsyncStorage.setItem("token", response.data.token);
-    dispatch({ type: "sign_up", payload: response.data.token });
+    dispatch({ type: "sign_in", payload: response.data.token });
 
     navigate("TrackList");
   } catch (err) {
@@ -29,7 +29,20 @@ const signUp = dispatch => async ({ email, password }) => {
   }
 };
 
-const signIn = dispatch => ({ email, password }) => {};
+const signIn = dispatch => async ({ email, password }) => {
+  try {
+    const response = await trackerApi.post("/signin", { email, password });
+    await AsyncStorage.setItem("token", response.data.token);
+    dispatch({ type: "sign_in", payload: response.data.token });
+
+    navigate("TrackList");
+  } catch (error) {
+    dispatch({
+      type: "add_error",
+      payload: "Something went wrong while signing in."
+    });
+  }
+};
 
 const signOut = dispatch => () => {};
 

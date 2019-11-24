@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-elements";
 import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
-import Spacer from "../components/Spacer";
 import { Context as AuthContext } from "../context/AuthContext";
 
 const SignupScreen = ({ navigation }) => {
